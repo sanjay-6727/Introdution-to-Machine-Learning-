@@ -3,6 +3,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+plt.rcParams["figure.figsize"] = (22, 26)   # BIG CANVAS
+plt.rcParams["figure.dpi"] = 600
+plt.rcParams["font.family"] = "STIXGeneral"
+plt.rcParams["axes.titlesize"] = 14
+plt.rcParams["axes.labelsize"] = 12
+plt.rcParams["xtick.labelsize"] = 10
+plt.rcParams["ytick.labelsize"] = 10
+
+sns.set_style("whitegrid")
 
 df = pd.read_csv("https://raw.githubusercontent.com/Apaulgithub/oibsip_taskno4/main/spam.csv", encoding='ISO-8859-1')
      
