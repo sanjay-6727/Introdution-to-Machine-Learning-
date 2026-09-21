@@ -1,0 +1,5 @@
+Criterion,Logistic Regression,SVM
+Accuracy,0.9305,0.9273
+Model Complexity,Low,High
+Training Time,Low,High
+Interpretability,High,Low

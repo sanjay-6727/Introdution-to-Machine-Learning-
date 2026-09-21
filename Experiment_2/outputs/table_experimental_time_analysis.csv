@@ -1,0 +1,5 @@
+Algorithm,Training(s),Prediction(s)
+Gaussian NB,0.00398,0.00079
+Multinomial NB,0.0034,0.00203
+Bernoulli NB,0.00548,0.00172
+Best KNN,0.02411,0.19402

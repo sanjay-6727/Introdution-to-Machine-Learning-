@@ -1,0 +1,113 @@
+The PostScript backend does not support transparency; partially transparent artists will be rendered opaque.
+The PostScript backend does not support transparency; partially transparent artists will be rendered opaque.
+The PostScript backend does not support transparency; partially transparent artists will be rendered opaque.
+loading data
+shape: (4601, 58)
+missing values: 0
+
+running EDA
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\01_class_distribution.png
+Numeric columns: ['word_freq_your', 'word_freq_000', 'word_freq_remove', 'char_freq_%24', 'word_freq_you', 'word_freq_free', 'word_freq_business', 'word_freq_hp', 'capital_run_length_total', 'word_freq_our']
+Categorical columns: []
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_01_histograms.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_01_histograms.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_02_boxplots.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_02_boxplots.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_03_violinplots.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_03_violinplots.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_04_scaling.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_04_scaling.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_05_outliers.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_05_outliers.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_06_missing_values.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_06_missing_values.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_07_correlation.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_07_correlation.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_08_pairplot.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_08_pairplot.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_09_qqplots.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda\spambase_09_qqplots.png
+EDA complete. Files saved in: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\eda
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\02_correlation_heatmap_full.png
+
+preprocessing
+train size: 3680, test size: 921
+
+training Logistic Regression
+baseline Logistic Regression accuracy: 0.9294245385450597
+Logistic Regression best params: {'C': 1, 'penalty': 'l2', 'solver': 'saga'}  best CV acc: 0.9241847826086955
+tuned Logistic Regression test accuracy: 0.9305103148751357
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\table_logistic_regression_performance.csv
+
+training SVM (linear, polynomial, RBF, sigmoid kernels)
+SVM best params: {'C': 10, 'gamma': 'scale', 'kernel': 'rbf'}  best CV acc: 0.9331521739130435
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\table_hyperparameter_tuning_results.csv
+best parameters per kernel: {'linear': {'C': 10, 'kernel': 'linear'}, 'rbf': {'C': 10, 'gamma': 'scale', 'kernel': 'rbf'}, 'sigmoid': {'C': 0.1, 'gamma': 'scale', 'kernel': 'sigmoid'}, 'poly': {'C': 10, 'degree': 2, 'gamma': 'scale', 'kernel': 'poly'}}
+linear: accuracy=0.9273  train_time=7.875s
+rbf: accuracy=0.9207  train_time=0.969s
+sigmoid: accuracy=0.8893  train_time=1.417s
+poly: accuracy=0.9164  train_time=1.106s
+
+SVM kernel-wise performance:
+     Kernel  Accuracy  F1 Score  Training Time (s)
+0   Linear    0.9273    0.9063             7.8750
+1      Rbf    0.9207    0.8976             0.9692
+2  Sigmoid    0.8893    0.8534             1.4166
+3     Poly    0.9164    0.8902             1.1060
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\table_svm_kernel_performance.csv
+best SVM kernel: linear
+
+plotting confusion matrices, ROC and precision-recall curves
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\03_confusion_matrices.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\04_roc_curves.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\05_precision_recall_curves.png
+
+plotting decision boundaries (PCA 2D)
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\06_svm_decision_boundaries_pca.png
+
+running 5-fold cross validation
+
+k-fold cross validation results:
+       Fold  Logistic Regression     SVM
+0   Fold 1               0.9375  0.9375
+1   Fold 2               0.9253  0.9226
+2   Fold 3               0.9307  0.9348
+3   Fold 4               0.9076  0.9158
+4   Fold 5               0.9171  0.9212
+5  Average               0.9236  0.9264
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\table_kfold_cross_validation.csv
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\07_cross_validation_accuracy.png
+
+comparing training time and accuracy across models
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\08_training_time_comparison.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\09_classifier_comparison_bar_chart.png
+
+comparative analysis:
+           Criterion Logistic Regression     SVM
+0          Accuracy              0.9305  0.9273
+1  Model Complexity                 Low    High
+2     Training Time                 Low    High
+3  Interpretability                High     Low
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs\table_comparative_analysis.csv
+Experiment 4 - Observations (auto-generated from results)
+
+Best-performing classifier: Logistic Regression
+   Logistic Regression test accuracy = 0.9305
+   Best SVM (linear kernel) test accuracy = 0.9273
+
+Impact of regularization (Logistic Regression):
+   GridSearchCV chose {'C': 1, 'penalty': 'l2', 'solver': 'saga'}. A smaller C means stronger regularization
+   (simpler decision boundary, less overfitting); the chosen C=1 and
+   penalty=l2 balances fitting the training data against
+   keeping coefficients small.
+
+Kernel behaviour in SVM:
+ Kernel  Accuracy  F1 Score  Training Time (s)
+ Linear    0.9273    0.9063             7.8750
+    Rbf    0.9207    0.8976             0.9692
+Sigmoid    0.8893    0.8534             1.4166
+   Poly    0.9164    0.8902             1.1060
+   The linear kernel is fastest and already competitive because Spambase is close to linearly
+   separable in its 57-dimensional feature space; RBF/poly/sigmoid add non-linear flexibility
+   at a higher training-time cost, which only pays off if there is genuine non-linear structure
+   left for them to capture (see the 2D PCA decision-boundary plot for a visual comparison).
+
+Bias-variance trade-off:
+   Logistic Regression has higher bias / lower variance (a single linear decision boundary),
+   while SVM with RBF/poly/sigmoid kernels has lower bias / higher variance (flexible, curved
+   boundaries that can overfit if C or gamma is too large) - this is why hyperparameter tuning
+   of C and gamma matters so much for SVM performance.
+
+
+Experiment 4 done, everything is in: C:\Users\sanja\Downloads\ml_assignments\Experiment_4\outputs

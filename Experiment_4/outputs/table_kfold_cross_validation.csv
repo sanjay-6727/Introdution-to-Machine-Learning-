@@ -1,0 +1,7 @@
+Fold,Logistic Regression,SVM
+Fold 1,0.9375,0.9375
+Fold 2,0.9253,0.9226
+Fold 3,0.9307,0.9348
+Fold 4,0.9076,0.9158
+Fold 5,0.9171,0.9212
+Average,0.9236,0.9264

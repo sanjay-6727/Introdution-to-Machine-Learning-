@@ -1,0 +1,150 @@
+The PostScript backend does not support transparency; partially transparent artists will be rendered opaque.
+The PostScript backend does not support transparency; partially transparent artists will be rendered opaque.
+The PostScript backend does not support transparency; partially transparent artists will be rendered opaque.
+C:\Users\sanja\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 8.759e+11, tolerance: 4.404e+09
+  model = cd_fast.enet_coordinate_descent(
+C:\Users\sanja\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 6.578e+12, tolerance: 4.405e+09
+  model = cd_fast.enet_coordinate_descent(
+C:\Users\sanja\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.366e+12, tolerance: 4.405e+09
+  model = cd_fast.enet_coordinate_descent(
+C:\Users\sanja\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.062e+12, tolerance: 4.405e+09
+  model = cd_fast.enet_coordinate_descent(
+C:\Users\sanja\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.652e+10, tolerance: 4.404e+09
+  model = cd_fast.enet_coordinate_descent(
+C:\Users\sanja\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 6.294e+12, tolerance: 4.405e+09
+  model = cd_fast.enet_coordinate_descent(
+C:\Users\sanja\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 6.455e+12, tolerance: 4.402e+09
+  model = cd_fast.enet_coordinate_descent(
+C:\Users\sanja\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.236e+12, tolerance: 4.402e+09
+  model = cd_fast.enet_coordinate_descent(
+C:\Users\sanja\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 5.900e+12, tolerance: 4.404e+09
+  model = cd_fast.enet_coordinate_descent(
+C:\Users\sanja\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 2.150e+10, tolerance: 4.405e+09
+  model = cd_fast.enet_coordinate_descent(
+C:\Users\sanja\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 3.144e+10, tolerance: 4.405e+09
+  model = cd_fast.enet_coordinate_descent(
+C:\Users\sanja\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:695: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 2.668e+10, tolerance: 4.402e+09
+  model = cd_fast.enet_coordinate_descent(
+===== Loading data =====
+Raw shape: (30000, 24)
+Shape after removing missing/sentinel targets: (29322, 21)
+Numeric features: ['Age', 'Income (USD)', 'Loan Amount Request (USD)', 'Current Loan Expenses (USD)', 'Dependents', 'Credit Score', 'No. of Defaults', 'Property Age', 'Property Type', 'Co-Applicant', 'Property Price']
+Categorical features: ['Gender', 'Income Stability', 'Profession', 'Type of Employment', 'Location', 'Expense Type 1', 'Expense Type 2', 'Has Active Credit Card', 'Property Location']
+Missing values before imputation:
+ Gender                           51
+Income (USD)                   4411
+Income Stability               1628
+Type of Employment             7125
+Current Loan Expenses (USD)     163
+Dependents                     2402
+Credit Score                   1641
+Has Active Credit Card         1521
+Property Age                   4673
+Property Location               341
+dtype: int64
+Shape after one-hot encoding: (29322, 46)
+
+===== Exploratory Data Analysis =====
+Numeric columns: ['Age', 'Income (USD)', 'Loan Amount Request (USD)', 'Current Loan Expenses (USD)', 'Dependents', 'Credit Score', 'No. of Defaults', 'Property Age', 'Property Type', 'Co-Applicant', 'Property Price', 'Loan Sanction Amount (USD)']
+Categorical columns: []
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_01_histograms.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_01_histograms.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_02_boxplots.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_02_boxplots.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_03_violinplots.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_03_violinplots.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_04_scaling.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_04_scaling.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_05_outliers.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_05_outliers.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_06_missing_values.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_06_missing_values.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_07_correlation.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_07_correlation.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_08_pairplot.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_08_pairplot.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_09_qqplots.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda\loan_09_qqplots.png
+EDA complete. Files saved in: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\eda
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\01_target_distribution.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\02_feature_vs_target_scatter.png
+
+===== Preprocessing for modeling =====
+Train size: 23457, Test size: 5865
+
+===== Linear Regression (baseline) =====
+Linear Regression test metrics: {'MAE': 20760.58370658594, 'MSE': 894962906.8222497, 'RMSE': np.float64(29915.93065278514), 'R2': 0.6021202146718346}
+
+===== Ridge / Lasso / Elastic Net with GridSearchCV =====
+Ridge: best params={'alpha': 100}  best CV R2=0.5812  (10.82s)
+Lasso: best params={'alpha': 10}  best CV R2=0.5775  (692.44s)
+Elastic Net: best params={'alpha': 0.1, 'l1_ratio': 0.5}  best CV R2=0.5904  (22.86s)
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\table1_hyperparameter_tuning_summary.csv
+
+===== 5-Fold Cross-Validation performance =====
+               Model       MAE           MSE      RMSE      R2
+0  Linear Regression  21122.68  9.691005e+08  31130.38  0.5857
+1              Ridge  21140.84  9.619347e+08  31015.07  0.5888
+2              Lasso  21113.68  9.647644e+08  31060.66  0.5876
+3        Elastic Net  21325.89  9.567042e+08  30930.64  0.5911
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\table2_cross_validation_performance.csv
+
+===== Test set performance =====
+               Model       MAE  ...      R2  Training Time (s)
+0  Linear Regression  20760.58  ...  0.6021             0.0495
+1              Ridge  20782.62  ...  0.6017            10.8240
+2              Lasso  20751.62  ...  0.6021           692.4377
+3        Elastic Net  21035.64  ...  0.5959            22.8643
+
+[4 rows x 6 columns]
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\table3_test_set_performance.csv
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\07_test_performance_comparison.png
+
+===== Predicted vs Actual / Residuals =====
+Best model on test set: Linear Regression
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\03_predicted_vs_actual.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\04_residual_plot.png
+
+===== Training vs Validation error (Ridge alpha sweep) =====
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\05_training_vs_validation_error.png
+
+===== Coefficient comparison =====
+                                Feature  ...  Elastic Net
+0               Feature 1: Property Age  ...       -88.91
+1               Feature 2: Income (USD)  ...        71.18
+2  Feature 3: Loan Amount Request (USD)  ...     24888.48
+
+[3 rows x 5 columns]
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\table4_coefficient_comparison.csv
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs\06_coefficient_comparison.png
+Lasso set 5 / 45 coefficients to (near) zero.
+Experiment 3 - Overfitting/Underfitting and Bias-Variance Analysis
+(auto-generated from the results computed above)
+
+Overfitting and Underfitting Analysis
+--------------------------------------
+- Training vs validation MSE (see 05_training_vs_validation_error.png): at very small
+  Ridge alpha the model fits the training data closely (low training error) but validation
+  error is higher - a sign of overfitting. As alpha increases, both errors converge and then
+  rise together once the model becomes too constrained (underfitting) at very large alpha.
+- Best Ridge alpha found by GridSearchCV: {'alpha': 100}
+- Best Lasso alpha found by GridSearchCV: {'alpha': 10}
+- Best Elastic Net params found by GridSearchCV: {'alpha': 0.1, 'l1_ratio': 0.5}
+- Generalization after tuning: cross-validation R2 for the tuned models
+  (Ridge=0.5812, Lasso=0.5775, Elastic Net=0.5904) compared with plain
+  Linear Regression's test R2=0.6021
+  shows regularization did not noticeably improve
+  generalization on this dataset.
+
+Bias-Variance Analysis
+------------------------
+- Linear Regression has low bias (it fits all 45 features without penalty) but can
+  have higher variance on noisy/collinear features, since coefficients are unconstrained.
+- Ridge Regression reduces variance by shrinking coefficient magnitudes (see coefficient comparison
+  plot) without setting them to zero, trading a small increase in bias for a reduction in variance.
+- Lasso Regression performs feature selection: it drove 5 out of 45
+  coefficients to exactly zero, producing a sparser and more interpretable model, at the cost
+  of some bias if a truly useful feature gets zeroed out.
+- Elastic Net (l1_ratio mixes L1 and L2) sits between Ridge and Lasso, offering some sparsity
+  while still handling correlated features more gracefully than pure Lasso.
+
+Conclusion
+----------
+Best performing model on the held-out test set: Linear Regression
+(Test RMSE=29915.93,
+ Test R2=0.6021)
+This suggests that for the Loan Amount dataset, the plain Linear Regression baseline was already close to optimal, and regularization mainly helped with coefficient stability rather than raw accuracy.
+
+
+Experiment 3 complete. All outputs are in: C:\Users\sanja\Downloads\ml_assignments\Experiment_3\outputs

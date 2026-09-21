@@ -1,0 +1,6 @@
+Dataset,Type of ML task,Feature Selection Technique,Suitable ML Algorithm,Baseline model used here,Test Accuracy
+Iris Dataset,Supervised - Multiclass Classification,ANOVA F-test (SelectKBest),Logistic Regression / KNN / Decision Tree,Logistic Regression,0.9333
+Loan Amount Prediction,Supervised - Regression,F-regression (SelectKBest),Linear/Ridge Regression / Random Forest Regressor,Linear Regression,R2=0.5515
+Predicting Diabetes,Supervised - Binary Classification,Chi-square test (SelectKBest),Logistic Regression / Random Forest Classifier,Random Forest Classifier,0.7403
+Classification of Email Spam,Supervised - Binary Classification,Chi-square test (SelectKBest),Naive Bayes / SVM / Logistic Regression,Logistic Regression,0.9229
+Handwritten Character Recognition / MNIST,Supervised - Multiclass Classification,Variance Threshold,KNN / SVM / CNN (deep learning),K-Nearest Neighbors,0.9639

@@ -1,0 +1,4 @@
+Feature,Linear Regression,Ridge,Lasso,Elastic Net
+Feature 1: Property Age,-46130.01,-929.64,-10.53,-88.91
+Feature 2: Income (USD),46116.08,912.03,-0.0,71.18
+Feature 3: Loan Amount Request (USD),34705.31,33215.74,34503.2,24888.48

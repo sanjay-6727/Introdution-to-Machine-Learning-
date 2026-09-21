@@ -1,0 +1,46 @@
+Feature,Linear Regression,Ridge,Lasso,Elastic Net
+Age,-593.517,-577.649,-566.455,-527.987
+Income (USD),46116.076,912.035,-0.0,71.179
+Loan Amount Request (USD),34705.307,33215.741,34503.201,24888.478
+Current Loan Expenses (USD),-967.845,-774.214,-920.966,532.373
+Dependents,-274.933,-268.338,-259.934,-254.865
+Credit Score,11697.131,11658.505,11689.042,11257.589
+No. of Defaults,-401.138,-403.036,-393.869,-389.841
+Property Age,-46130.009,-929.635,-10.526,-88.908
+Property Type,-108.499,-109.229,-99.162,-107.826
+Co-Applicant,-690.498,-692.318,-679.553,-691.191
+Property Price,-641.365,662.156,-447.196,7370.024
+Gender_M,-0.493,8.094,0.0,46.511
+Income Stability_Low,2554.996,2317.954,2268.566,1181.825
+Profession_Commercial associate,-4014.918,-467.237,0.0,-131.996
+Profession_Maternity leave,-73.352,-27.646,-6.08,-55.244
+Profession_Pensioner,-475.005,1617.651,1855.301,822.972
+Profession_State servant,-2555.093,-404.17,-111.436,-169.461
+Profession_Student,-0.0,0.0,0.0,0.0
+Profession_Unemployed,136.988,182.687,179.613,152.259
+Profession_Working,-4605.677,-627.008,-90.748,-297.007
+Type of Employment_Cleaning staff,-95.858,-107.436,-88.219,-131.058
+Type of Employment_Cooking staff,13.812,-1.272,4.706,-76.623
+Type of Employment_Core staff,-10.647,-21.603,-0.0,-37.441
+Type of Employment_Drivers,-515.938,-529.452,-502.12,-591.289
+Type of Employment_HR staff,-145.287,-139.044,-125.55,-137.807
+Type of Employment_High skill tech staff,15.66,9.083,8.239,21.766
+Type of Employment_IT staff,-229.167,-229.538,-218.262,-216.455
+Type of Employment_Laborers,-325.088,-345.575,-299.468,-449.697
+Type of Employment_Low-skill Laborers,-19.024,-27.937,-10.933,-70.016
+Type of Employment_Managers,449.952,458.184,461.714,478.668
+Type of Employment_Medicine staff,250.977,244.808,244.101,225.573
+Type of Employment_Private service staff,-156.713,-161.722,-144.115,-175.614
+Type of Employment_Realty agents,214.204,218.723,209.354,226.451
+Type of Employment_Sales staff,22.514,-1.341,19.823,-118.323
+Type of Employment_Secretaries,117.419,113.498,108.335,97.914
+Type of Employment_Security staff,-178.654,-190.186,-169.259,-220.961
+Type of Employment_Waiters/barmen staff,409.716,400.046,400.78,337.097
+Location_Semi-Urban,-44.28,-43.17,-32.664,-42.53
+Location_Urban,77.998,111.521,94.476,222.321
+Expense Type 1_Y,34.635,43.194,27.472,59.046
+Expense Type 2_Y,387.544,384.789,378.884,359.17
+Has Active Credit Card_Inactive,-15.745,-13.53,-5.855,-27.902
+Has Active Credit Card_Unpossessed,144.043,137.807,136.489,88.505
+Property Location_Semi-Urban,-22.326,-20.347,-14.155,-10.103
+Property Location_Urban,161.848,164.884,154.664,189.469

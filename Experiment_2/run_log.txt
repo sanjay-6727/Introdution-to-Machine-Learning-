@@ -1,0 +1,172 @@
+The PostScript backend does not support transparency; partially transparent artists will be rendered opaque.
+The PostScript backend does not support transparency; partially transparent artists will be rendered opaque.
+The PostScript backend does not support transparency; partially transparent artists will be rendered opaque.
+===== Loading data =====
+Shape: (4601, 58)
+Missing values: 0
+
+===== Exploratory Data Analysis =====
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\01_class_distribution.png
+Numeric columns: ['word_freq_your', 'word_freq_000', 'word_freq_remove', 'char_freq_%24', 'word_freq_you', 'word_freq_free', 'word_freq_business', 'word_freq_hp', 'capital_run_length_total', 'word_freq_our']
+Categorical columns: []
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_01_histograms.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_01_histograms.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_02_boxplots.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_02_boxplots.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_03_violinplots.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_03_violinplots.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_04_scaling.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_04_scaling.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_05_outliers.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_05_outliers.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_06_missing_values.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_06_missing_values.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_07_correlation.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_07_correlation.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_08_pairplot.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_08_pairplot.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_09_qqplots.eps and C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda\spambase_09_qqplots.png
+EDA complete. Files saved in: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\eda
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\02_correlation_heatmap_full.png
+
+===== Preprocessing =====
+Train size: 3680, Test size: 921
+
+===== Naive Bayes models =====
+
+Naive Bayes Comparison:
+            Gaussian  Multinomial  Bernoulli
+Accuracy     0.8328       0.7763     0.8762
+Precision    0.7146       0.7199     0.8716
+Recall       0.9587       0.7080     0.8044
+F1           0.8188       0.7139     0.8367
+ROC-AUC      0.9376       0.8248     0.9496
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\table_naive_bayes_comparison.csv
+Best Naive Bayes variant: Bernoulli
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\05a_confusion_matrix_naive_bayes.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\06a_roc_curve_naive_bayes.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\07a_precision_recall_naive_bayes.png
+
+===== KNN: varying k =====
+
+KNN Comparison:
+     k  Accuracy  Precision  Recall      F1
+0   1    0.8990     0.8792  0.8623  0.8707
+1   3    0.8979     0.8726  0.8678  0.8702
+2   5    0.9077     0.8861  0.8788  0.8824
+3   7    0.9088     0.8930  0.8733  0.8830
+4   9    0.9088     0.8930  0.8733  0.8830
+5  11    0.9099     0.9000  0.8678  0.8836
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\table_knn_comparison.csv
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\08_accuracy_vs_k.png
+Best k from sweep: 11
+
+===== Hyperparameter tuning: GridSearchCV vs RandomizedSearchCV =====
+GridSearchCV best params: {'algorithm': 'kd_tree', 'metric': 'manhattan', 'n_neighbors': 11, 'weights': 'distance'}  best CV acc: 0.9228260869565217
+RandomizedSearchCV best params: {'weights': 'distance', 'n_neighbors': 9, 'metric': 'manhattan', 'algorithm': 'kd_tree'}  best CV acc: 0.9211956521739131
+
+Grid Search vs Randomized Search:
+                    GridSearchCV RandomizedSearchCV
+Best k                       11                  9
+Metric                manhattan          manhattan
+Weights                distance           distance
+Algorithm               kd_tree            kd_tree
+CV Accuracy              0.9228             0.9212
+Execution Time (s)       15.977              2.024
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\table_grid_vs_randomized_search.csv
+Best KNN test accuracy: 0.9218241042345277
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\13_gridsearch_heatmap.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\14_randomizedsearch_score_distribution.png
+
+===== KDTree vs BallTree =====
+
+KDTree vs BallTree:
+                      kd_tree  ball_tree
+Accuracy             0.90990    0.90990
+Training Time (s)    0.02663    0.01798
+Prediction Time (s)  0.20153    0.18268
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\table_kdtree_vs_balltree.csv
+
+===== 5-Fold Cross Validation =====
+
+Cross Validation results:
+       Fold  Naive Bayes (Bernoulli)  Best KNN
+0        1                   0.9062    0.9389
+1        2                   0.8913    0.9293
+2        3                   0.8723    0.9253
+3        4                   0.8682    0.9226
+4        5                   0.8981    0.8967
+5  Average                   0.8872    0.9226
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\table_cross_validation.csv
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\09_cross_validation_accuracy.png
+
+===== Timing comparison =====
+
+Experimental Time Analysis:
+                 Training(s)  Prediction(s)
+Gaussian NB         0.00398        0.00079
+Multinomial NB      0.00340        0.00203
+Bernoulli NB        0.00548        0.00172
+Best KNN            0.02411        0.19402
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\table_experimental_time_analysis.csv
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\table_theoretical_time_complexity.csv
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\10_training_time_comparison.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\11_prediction_time_comparison.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\12_classifier_comparison_bar_chart.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\05b_confusion_matrix_best_knn.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\06b_roc_curve_all_models.png
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\07b_precision_recall_all_models.png
+
+===== Additional tasks =====
+
+Different train-test splits (Best KNN):
+    Test size  Accuracy
+0        0.1    0.9067
+1        0.2    0.9218
+2        0.3    0.9290
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\table_train_test_splits.csv
+
+Euclidean vs Manhattan distance (k=11):
+   Distance metric  Accuracy
+0       euclidean    0.9099
+1       manhattan    0.9034
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\table_distance_metric_comparison.csv
+
+Weighted vs Uniform KNN (k=11):
+     Weights  Accuracy
+0   uniform    0.9099
+1  distance    0.9240
+saved: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs\table_weighted_knn_comparison.csv
+Experiment 2 - Analysis Questions (auto-generated from results)
+
+1. Which Naive Bayes variant performed best?
+   Bernoulli Naive Bayes performed best, with accuracy=0.8762
+   and ROC-AUC=0.9496.
+
+2. What is the optimal value of k?
+   From the k-sweep, k=11 gave the highest test accuracy
+   (0.9099). GridSearchCV independently selected
+   k=11 as optimal using 5-fold CV.
+
+3. Compare GridSearchCV and RandomizedSearchCV.
+   GridSearchCV best CV accuracy=0.9228 in 15.98s (exhaustive, 64 combinations).
+   RandomizedSearchCV best CV accuracy=0.9212 in 2.02s (15 sampled combinations).
+   RandomizedSearchCV is faster and found a similar
+   quality solution, showing it is a good cheaper alternative when the search space is large.
+
+4. Compare KDTree and BallTree.
+   KDTree: accuracy=0.9099, train=0.02663s,
+   predict=0.20153s.
+   BallTree: accuracy=0.9099, train=0.01798s,
+   predict=0.18268s.
+   Both give identical/near-identical accuracy since they are exact search structures; they only
+   differ in indexing speed, which matters more on higher-dimensional or larger datasets.
+
+5. Compare theoretical and practical complexity.
+   Theoretically Naive Bayes trains in O(n*d) and predicts in O(d), while KNN has ~O(1) training but
+   O(n*d) brute-force prediction (or O(log n) average with a tree). In practice, Naive Bayes trained in
+   0.00548s and predicted in 0.00172s,
+   while Best KNN trained in 0.02411s and predicted in
+   0.19402s - matching the theoretical expectation that KNN prediction
+   is relatively much slower than Naive Bayes prediction.
+
+6. Which classifier is preferred for large datasets?
+   Naive Bayes is preferred for large datasets: its training and prediction cost scale linearly
+   with features and are independent of the number of stored neighbors, unlike KNN, whose
+   prediction cost grows with dataset size unless tree structures (KDTree/BallTree) are used,
+   and even then it needs distance computations at inference time.
+
+
+Experiment 2 complete. All outputs are in: C:\Users\sanja\Downloads\ml_assignments\Experiment_2\outputs

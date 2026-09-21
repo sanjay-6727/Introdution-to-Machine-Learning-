@@ -1,0 +1,38 @@
+Experiment 2 - Analysis Questions (auto-generated from results)
+
+1. Which Naive Bayes variant performed best?
+   Bernoulli Naive Bayes performed best, with accuracy=0.8762
+   and ROC-AUC=0.9496.
+
+2. What is the optimal value of k?
+   From the k-sweep, k=11 gave the highest test accuracy
+   (0.9099). GridSearchCV independently selected
+   k=11 as optimal using 5-fold CV.
+
+3. Compare GridSearchCV and RandomizedSearchCV.
+   GridSearchCV best CV accuracy=0.9228 in 15.98s (exhaustive, 64 combinations).
+   RandomizedSearchCV best CV accuracy=0.9212 in 2.02s (15 sampled combinations).
+   RandomizedSearchCV is faster and found a similar
+   quality solution, showing it is a good cheaper alternative when the search space is large.
+
+4. Compare KDTree and BallTree.
+   KDTree: accuracy=0.9099, train=0.02663s,
+   predict=0.20153s.
+   BallTree: accuracy=0.9099, train=0.01798s,
+   predict=0.18268s.
+   Both give identical/near-identical accuracy since they are exact search structures; they only
+   differ in indexing speed, which matters more on higher-dimensional or larger datasets.
+
+5. Compare theoretical and practical complexity.
+   Theoretically Naive Bayes trains in O(n*d) and predicts in O(d), while KNN has ~O(1) training but
+   O(n*d) brute-force prediction (or O(log n) average with a tree). In practice, Naive Bayes trained in
+   0.00548s and predicted in 0.00172s,
+   while Best KNN trained in 0.02411s and predicted in
+   0.19402s - matching the theoretical expectation that KNN prediction
+   is relatively much slower than Naive Bayes prediction.
+
+6. Which classifier is preferred for large datasets?
+   Naive Bayes is preferred for large datasets: its training and prediction cost scale linearly
+   with features and are independent of the number of stored neighbors, unlike KNN, whose
+   prediction cost grows with dataset size unless tree structures (KDTree/BallTree) are used,
+   and even then it needs distance computations at inference time.

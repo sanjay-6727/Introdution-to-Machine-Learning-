@@ -1,0 +1,7 @@
+Parameter,GridSearchCV,RandomizedSearchCV
+Best k,11,9
+Metric,manhattan,manhattan
+Weights,distance,distance
+Algorithm,kd_tree,kd_tree
+CV Accuracy,0.9228,0.9212
+Execution Time (s),15.977,2.024

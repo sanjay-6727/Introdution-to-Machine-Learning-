@@ -1,0 +1,5 @@
+Algorithm,Training,Prediction
+Naive Bayes,O(n*d),O(d)
+KNN (Brute),O(1),O(n*d)
+KDTree,O(n log n),O(log n) avg
+BallTree,O(n log n),O(log n) avg

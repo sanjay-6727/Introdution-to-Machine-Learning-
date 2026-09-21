@@ -1,0 +1,4 @@
+Metric,kd_tree,ball_tree
+Accuracy,0.9099,0.9099
+Training Time (s),0.02663,0.01798
+Prediction Time (s),0.20153,0.18268

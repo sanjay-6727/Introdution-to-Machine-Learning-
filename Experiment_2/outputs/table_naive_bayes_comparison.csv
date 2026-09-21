@@ -1,0 +1,6 @@
+Metric,Gaussian,Multinomial,Bernoulli
+Accuracy,0.8328,0.7763,0.8762
+Precision,0.7146,0.7199,0.8716
+Recall,0.9587,0.708,0.8044
+F1,0.8188,0.7139,0.8367
+ROC-AUC,0.9376,0.8248,0.9496

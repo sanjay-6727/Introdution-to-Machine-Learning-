@@ -1,0 +1,36 @@
+Experiment 3 - Overfitting/Underfitting and Bias-Variance Analysis
+(auto-generated from the results computed above)
+
+Overfitting and Underfitting Analysis
+--------------------------------------
+- Training vs validation MSE (see 05_training_vs_validation_error.png): at very small
+  Ridge alpha the model fits the training data closely (low training error) but validation
+  error is higher - a sign of overfitting. As alpha increases, both errors converge and then
+  rise together once the model becomes too constrained (underfitting) at very large alpha.
+- Best Ridge alpha found by GridSearchCV: {'alpha': 100}
+- Best Lasso alpha found by GridSearchCV: {'alpha': 10}
+- Best Elastic Net params found by GridSearchCV: {'alpha': 0.1, 'l1_ratio': 0.5}
+- Generalization after tuning: cross-validation R2 for the tuned models
+  (Ridge=0.5812, Lasso=0.5775, Elastic Net=0.5904) compared with plain
+  Linear Regression's test R2=0.6021
+  shows regularization did not noticeably improve
+  generalization on this dataset.
+
+Bias-Variance Analysis
+------------------------
+- Linear Regression has low bias (it fits all 45 features without penalty) but can
+  have higher variance on noisy/collinear features, since coefficients are unconstrained.
+- Ridge Regression reduces variance by shrinking coefficient magnitudes (see coefficient comparison
+  plot) without setting them to zero, trading a small increase in bias for a reduction in variance.
+- Lasso Regression performs feature selection: it drove 5 out of 45
+  coefficients to exactly zero, producing a sparser and more interpretable model, at the cost
+  of some bias if a truly useful feature gets zeroed out.
+- Elastic Net (l1_ratio mixes L1 and L2) sits between Ridge and Lasso, offering some sparsity
+  while still handling correlated features more gracefully than pure Lasso.
+
+Conclusion
+----------
+Best performing model on the held-out test set: Linear Regression
+(Test RMSE=29915.93,
+ Test R2=0.6021)
+This suggests that for the Loan Amount dataset, the plain Linear Regression baseline was already close to optimal, and regularization mainly helped with coefficient stability rather than raw accuracy.

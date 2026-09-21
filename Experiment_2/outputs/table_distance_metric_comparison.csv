@@ -1,0 +1,3 @@
+Distance metric,Accuracy
+euclidean,0.9099
+manhattan,0.9034

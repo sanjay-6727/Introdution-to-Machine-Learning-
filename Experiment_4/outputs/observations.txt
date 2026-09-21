@@ -1,0 +1,28 @@
+Experiment 4 - Observations (auto-generated from results)
+
+Best-performing classifier: Logistic Regression
+   Logistic Regression test accuracy = 0.9305
+   Best SVM (linear kernel) test accuracy = 0.9273
+
+Impact of regularization (Logistic Regression):
+   GridSearchCV chose {'C': 1, 'penalty': 'l2', 'solver': 'saga'}. A smaller C means stronger regularization
+   (simpler decision boundary, less overfitting); the chosen C=1 and
+   penalty=l2 balances fitting the training data against
+   keeping coefficients small.
+
+Kernel behaviour in SVM:
+ Kernel  Accuracy  F1 Score  Training Time (s)
+ Linear    0.9273    0.9063             7.8750
+    Rbf    0.9207    0.8976             0.9692
+Sigmoid    0.8893    0.8534             1.4166
+   Poly    0.9164    0.8902             1.1060
+   The linear kernel is fastest and already competitive because Spambase is close to linearly
+   separable in its 57-dimensional feature space; RBF/poly/sigmoid add non-linear flexibility
+   at a higher training-time cost, which only pays off if there is genuine non-linear structure
+   left for them to capture (see the 2D PCA decision-boundary plot for a visual comparison).
+
+Bias-variance trade-off:
+   Logistic Regression has higher bias / lower variance (a single linear decision boundary),
+   while SVM with RBF/poly/sigmoid kernels has lower bias / higher variance (flexible, curved
+   boundaries that can overfit if C or gamma is too large) - this is why hyperparameter tuning
+   of C and gamma matters so much for SVM performance.

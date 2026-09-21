@@ -1,0 +1,5 @@
+Kernel,Accuracy,F1 Score,Training Time (s)
+Linear,0.9273,0.9063,7.875
+Rbf,0.9207,0.8976,0.9692
+Sigmoid,0.8893,0.8534,1.4166
+Poly,0.9164,0.8902,1.106

@@ -1,0 +1,357 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{longtable}
+\usepackage{mathptmx}
+\usepackage[bottom]{footmisc}
+
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\setlist{itemsep=2pt,topsep=3pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{ICS1512}
+\rhead{Machine Learning Algorithms Laboratory}
+\cfoot{\thepage}
+
+\lstset{
+language=Python,
+basicstyle=\ttfamily\small,
+numbers=left,
+frame=single,
+breaklines=true,
+showstringspaces=false
+}
+
+\begin{document}
+
+\begin{tabular}{|p{4cm}|p{11cm}|}
+\hline
+Experiment No. & 9 \\ \hline
+Experiment Title & Perceptron vs Multilayer Perceptron (A/B Experiment) with Hyperparameter Tuning\footnotemark \\ \hline
+Student Name & Sanjay S \\ \hline
+Register Number & 3122247001056 \\ \hline
+Faculty & Dr. Poreddy Ajay Kumar Reddy \\ \hline
+Submission Date & 20/09/2026 \\ \hline
+\end{tabular}
+\footnotetext{\textbf{GitHub Repository: }\url{https://github.com/sanjay-6727/Introdution-to-Machine-Learning-}}
+
+\section{Objective}
+Build a Perceptron (PLA) and a Multilayer Perceptron (MLP) from scratch, tune the MLP properly, and compare
+the two on handwritten character recognition.
+
+\section{Problem Statement}
+Classify 3,410 handwritten character images into 62 classes (0--9, A--Z, a--z).
+\begin{itemize}
+\item \textbf{Model A:} single layer Perceptron, step activation.
+\item \textbf{Model B:} MLP with hidden layers, trained with backpropagation.
+\item Compare them on a held out test set.
+\end{itemize}
+
+\section{Dataset Description}
+\begin{longtable}{|p{2.8cm}|p{3.7cm}|p{1.5cm}|p{2.6cm}|p{1.5cm}|p{1.4cm}|}
+\hline
+\textbf{Dataset} & \textbf{Source} & \textbf{Samples} & \textbf{Features} & \textbf{Classes} & \textbf{Missing} \\ \hline
+English Handwritten Characters & Kaggle, dhruvildave\slash english-handwritten-characters-dataset & 3{,}410 & 784 (28x28 pixels) & 62 & none \\ \hline
+\end{longtable}
+
+\begin{itemize}
+\item 55 images per class, so the data is balanced.
+\item Split 70/15/15, stratified, seed 42: 2387 train, 511 validation, 512 test.
+\item Validation set used for all tuning, test set used once at the end.
+\end{itemize}
+
+\section{Exploratory Data Analysis}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{outputs/Experiment_9_eda_combined.png}
+\caption{Sample images (top) and class distribution (bottom).}
+\end{figure}
+
+\textbf{Inference:}
+\begin{itemize}
+\item Every class has exactly 55 images, so chance level is only 1/62 (about 1.6\%).
+\item Handwriting varies a lot inside one class (thick or thin, slanted or upright).
+\item Some characters look almost the same at 28x28: 0/O/o and 1/I/l. This makes the problem hard.
+\end{itemize}
+
+\section{Data Preprocessing}
+\begin{itemize}
+\item Convert to grayscale, pad to a square, resize to 28x28.
+\item Invert so ink = 1, then scale each image to [0, 1].
+\item Flatten to 784 values.
+\item Standardize each pixel using the training set mean and standard deviation.
+\end{itemize}
+
+\lstinputlisting[caption={Image preprocessing},firstline=38,lastline=43]{run_experiment.py}
+
+\section{Machine Learning Algorithm}
+Both models are written in NumPy. scikit-learn is only used for the split and the metrics.
+
+\textbf{Model A: Perceptron (PLA)}
+\begin{itemize}
+\item Step activation: $\hat y = \mathrm{step}(w^Tx+b)$
+\item Update rule: $w_{t+1} = w_t + \eta\,(y-\hat y)\,x$
+\item 62 one vs rest perceptrons, prediction = class with the highest score.
+\item Fast and simple, but only draws straight boundaries.
+\end{itemize}
+
+\textbf{Model B: MLP}
+\begin{itemize}
+\item Input, hidden layers with ReLU / tanh / sigmoid, softmax output.
+\item Loss: cross entropy (MSE also tested). Trained with backpropagation.
+\item Optimizers: Gradient Descent, SGD, Adam.
+\item Learns non linear boundaries, but has many hyperparameters and overfits easily.
+\end{itemize}
+
+\lstinputlisting[caption={PLA from scratch},firstline=106,lastline=134]{run_experiment.py}
+\lstinputlisting[caption={One MLP training step (backpropagation and optimizer update)},firstline=191,lastline=217]{run_experiment.py}
+
+\section{Experimental Setup}
+\begin{tabular}{ll}
+\toprule
+Python Version & 3.12.3 \\
+NumPy Version & 2.4.4 \\
+Scikit-Learn Version & 1.8.0 \\
+Operating System & Ubuntu Linux, CPU only \\
+Random Seed & 42 \\
+Hardware & \\
+\bottomrule
+\end{tabular}
+
+\section{Hyperparameter Selection}
+\textbf{PLA:} the learning rate $\eta$ makes no difference. With weights starting at zero, $\eta$ only scales
+the weights, and the step function and argmax ignore scale. Used $\eta = 0.01$.
+
+\textbf{MLP:} tuned one factor at a time on validation accuracy, keeping the best value each time.
+Starting point: 1 hidden layer of 128 ReLU units, cross entropy, Adam, lr $10^{-3}$, batch 64, 60 epochs.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lcccc}
+\toprule
+Factor & Settings tried & Best setting & Best val. acc. & Worst val. acc. \\
+\midrule
+Optimizer + learning rate & 11 & sgd lr=0.5 & 45.6\% & 15.9\% \\
+Activation & 3 & relu & 45.6\% & 41.1\% \\
+Cost function & 2 & cross-entropy & 45.6\% & 43.6\% \\
+Batch size & 5 & bs=32 & 47.7\% & 25.6\% \\
+Depth / width + lr & 10 & 1x256 & 50.1\% & 1.6\% \\
+L2 weight decay & 4 & l2=0.001 & 53.6\% & 48.1\% \\
+\bottomrule
+\end{tabular}
+\caption{Tuning summary. Detailed tables are in Section~\ref{sec:tuning}.}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{outputs/Experiment_9_tuning_combined.png}
+\caption{Train vs validation accuracy for every tuning stage (top), optimizer convergence and depth (bottom).}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{3.2cm}|p{3.4cm}|p{8.4cm}|}
+\hline
+\textbf{Hyperparameter} & \textbf{Chosen} & \textbf{Why} \\ \hline
+Hidden layers & 1 x 256 & Best validation accuracy (50.1\%). More layers did not clearly help. \\ \hline
+Activation & ReLU & Best validation accuracy (45.6\%). \\ \hline
+Cost function & Cross entropy & Better than MSE (45.6\% vs 43.6\%). \\ \hline
+Optimizer, lr & SGD, 0.5 & Best of 11 combinations (45.6\%). Best Adam: 44.0\%. \\ \hline
+Batch size & 32 & Best of 16 to 256 (47.7\%). \\ \hline
+L2 weight decay & $10^{-3}$ & Best validation accuracy (53.6\% vs 50.1\% without). \\ \hline
+Early stopping & patience 20 & Stopped after 119 epochs. \\ \hline
+\end{tabular}
+\caption{Final MLP configuration.}
+\end{table}
+
+\section{Results}
+\begin{table}[H]
+\centering
+\begin{tabular}{lcccccc}
+\toprule
+Model & Accuracy & Precision & Recall & F1 & Macro AUC & Train acc. \\
+\midrule
+A: PLA & 23.0\% & 25.7\% & 23.0\% & 23.1\% & 0.782 & 76.3\% \\
+B: MLP (tuned) & \textbf{49.4\%} & \textbf{50.9\%} & \textbf{49.5\%} & \textbf{48.8\%} & \textbf{0.939} & 99.7\% \\
+MLP (untuned)$^\dagger$ & 1.2\% & 0.2\% & 1.2\% & 0.3\% & -- & -- \\
+\bottomrule
+\end{tabular}
+\caption{Test set results (precision, recall and F1 are macro averages).}
+\end{table}
+$^\dagger$ sigmoid, MSE, SGD, lr 0.01. It stays at chance level.
+
+\section{Result Visualization}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{outputs/Experiment_9_results_combined.png}
+\caption{Confusion matrices (PLA left, MLP right) and ROC curves on the test set.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{outputs/Experiment_9_curves_combined.png}
+\caption{Error and loss against epochs, and test metrics for both models.}
+\label{fig:curves}
+\end{figure}
+
+\textbf{Inference:}
+\begin{itemize}
+\item PLA confusion matrix is scattered. MLP has a clear diagonal.
+\item MLP mistakes are mostly look alikes: x$\to$u (3), l$\to$t (3), i$\to$1 (3), I$\to$l (3) (true $\to$ predicted, count).
+\item Hardest classes: `x' (0\%), `I' (11\%), `l' (12\%), `5' (12\%). Easiest: `U' (88\%), `c' (78\%), `C' (75\%), `3' (75\%).
+\item ROC: MLP is close to the top left corner (AUC 0.939), PLA is much lower (0.782).
+\item PLA training error stops at about 24\% and never reaches zero. MLP training loss goes almost to zero.
+\end{itemize}
+
+\section{Detailed Tuning Results}\label{sec:tuning}
+Each run used 60 epochs. ``--'' means the run never reached exactly zero training error.
+
+\begin{table}[H]\centering\small
+\begin{tabular}{lcccc}\toprule
+Setting & Train acc. & Val. acc. & Epochs to 0 train err. & Final train loss \\\midrule
+gd lr=0.1 & 24.0\% & 15.9\% & -- & 3.4027 \\
+gd lr=0.5 & 60.6\% & 36.2\% & -- & 1.7591 \\
+gd lr=1 & 76.8\% & 40.3\% & -- & 1.1169 \\
+sgd lr=0.01 & 54.7\% & 32.3\% & -- & 2.0433 \\
+sgd lr=0.05 & 89.2\% & 43.8\% & -- & 0.5896 \\
+sgd lr=0.1 & 97.7\% & 44.8\% & -- & 0.2072 \\
+sgd lr=0.5 & 99.5\% & \textbf{45.6\%} & -- & 0.0233 \\
+adam lr=0.0001 & 61.3\% & 35.2\% & -- & 1.7563 \\
+adam lr=0.001 & 99.6\% & 44.0\% & -- & 0.0806 \\
+adam lr=0.003 & 100.0\% & 44.0\% & 46 & 0.0070 \\
+adam lr=0.01 & 100.0\% & 42.5\% & 34 & 0.0013 \\
+\bottomrule\end{tabular}
+\caption{Stage 1 -- optimiser and learning rate (60 epochs; ``--'' = never reached zero training error).}\label{tab:opt}\end{table}
+\begin{table}[H]\centering\small
+\begin{tabular}{lcccc}\toprule
+Setting & Train acc. & Val. acc. & Epochs to 0 train err. & Final train loss \\\midrule
+relu & 99.5\% & \textbf{45.6\%} & -- & 0.0233 \\
+tanh & 99.9\% & 42.1\% & 46 & 0.0339 \\
+sigmoid & 90.6\% & 41.1\% & -- & 0.5108 \\
+\bottomrule\end{tabular}
+\caption{Stage 2 -- activation function.}\label{tab:act}\end{table}
+\begin{table}[H]\centering\small
+\begin{tabular}{lcccc}\toprule
+Setting & Train acc. & Val. acc. & Epochs to 0 train err. & Final train loss \\\midrule
+cross-entropy & 99.5\% & \textbf{45.6\%} & -- & 0.0233 \\
+MSE & 85.3\% & 43.6\% & -- & 0.1864 \\
+\bottomrule\end{tabular}
+\caption{Stage 3 -- cost function.}\label{tab:loss}\end{table}
+\begin{table}[H]\centering\small
+\begin{tabular}{lcccc}\toprule
+Setting & Train acc. & Val. acc. & Epochs to 0 train err. & Final train loss \\\midrule
+bs=16 & 56.5\% & 25.6\% & -- & 8.8025 \\
+bs=32 & 100.0\% & \textbf{47.7\%} & 38 & 0.0045 \\
+bs=64 & 99.5\% & 45.6\% & -- & 0.0233 \\
+bs=128 & 99.6\% & 46.6\% & -- & 0.0396 \\
+bs=256 & 98.5\% & 45.0\% & -- & 0.1326 \\
+\bottomrule\end{tabular}
+\caption{Stage 4 -- batch size.}\label{tab:batch}\end{table}
+\begin{table}[H]\centering\small
+\begin{tabular}{lcccc}\toprule
+Setting & Train acc. & Val. acc. & Epochs to 0 train err. & Final train loss \\\midrule
+1x128 lr=0.5 & 100.0\% & 47.7\% & 38 & 0.0045 \\
+1x128 lr=0.1 & 99.5\% & 45.4\% & -- & 0.0597 \\
+2x128 lr=0.5 & 57.0\% & 24.7\% & -- & 1.9932 \\
+2x128 lr=0.1 & 100.0\% & 46.0\% & 57 & 0.0099 \\
+3x128 lr=0.5 & 1.6\% & 1.6\% & -- & 4.1272 \\
+3x128 lr=0.1 & 100.0\% & 48.7\% & 45 & 0.0034 \\
+4x128 lr=0.5 & 33.5\% & 18.0\% & -- & 2.9929 \\
+4x128 lr=0.1 & 100.0\% & 49.5\% & 34 & 0.0016 \\
+1x256 & 99.9\% & \textbf{50.1\%} & 28 & 0.0057 \\
+1x512 & 100.0\% & 49.7\% & 27 & 0.0038 \\
+\bottomrule\end{tabular}
+\caption{Stage 5 -- depth/width and learning rate.}\label{tab:depth}\end{table}
+\begin{table}[H]\centering\small
+\begin{tabular}{lcccc}\toprule
+Setting & Train acc. & Val. acc. & Epochs to 0 train err. & Final train loss \\\midrule
+l2=0 & 99.9\% & 50.1\% & 28 & 0.0057 \\
+l2=0.0001 & 99.8\% & 49.7\% & 44 & 0.0130 \\
+l2=0.001 & 99.5\% & \textbf{53.6\%} & -- & 0.0842 \\
+l2=0.01 & 73.5\% & 48.1\% & -- & 1.1224 \\
+\bottomrule\end{tabular}
+\caption{Stage 6 -- L2 weight decay.}\label{tab:l2}\end{table}
+
+\section{Discussion}
+\textbf{Q1. Why does PLA underperform MLP?}
+\begin{itemize}
+\item It draws one straight line per class, but these classes are not linearly separable.
+\item It cannot even fit its own training data (76.3\% train accuracy).
+\item The step update has no loss or margin, so on this data it never settles.
+\item Result: 23.0\% test accuracy vs 49.4\% for the MLP.
+\end{itemize}
+
+\textbf{Q2. Which hyperparameters mattered most?}
+\begin{itemize}
+\item \textbf{Learning rate} by far. Validation accuracy ranged from 15.9\%--45.6\% across optimizer and lr settings.
+\item lr 0.5 broke batch size 16 (25.6\%) and 3 hidden layers (1.6\%).
+\item L2 weight decay helped by 3.5 points.
+\item Activation and loss: small differences, within noise (about $\pm$2 points).
+\end{itemize}
+
+\textbf{Q3. Did SGD vs Adam affect convergence?}
+\begin{itemize}
+\item Adam worked well over a wide lr range ($10^{-3}$ to $10^{-2}$, validation 42.5\%--44.0\%).
+\item SGD was very sensitive: lr 0.01 gave 32.3\%, lr 0.5 gave 45.6\%.
+\item Full batch GD was slowest (one update per epoch).
+\item Best SGD and best Adam differ by only 1.6 points, so neither is clearly better.
+\end{itemize}
+
+\textbf{Q4. Did more hidden layers always help?}
+\begin{itemize}
+\item No. At lr 0.5, 3 layers failed completely (1.6\%).
+\item At lr 0.1, going from 1 to 4 layers gave about 4 points (45.4\% to 49.5\%), close to noise.
+\item One wide layer (50.1\%) did as well, so I kept one hidden layer.
+\item Every stable model already reached about 100\% train accuracy, so extra depth had nothing left to fix.
+\end{itemize}
+
+\textbf{Q5. Did the MLP overfit? How to reduce it?}
+\begin{itemize}
+\item Yes. Train accuracy 99.7\%, test accuracy 49.4\%.
+\item Without regularization, validation loss is lowest at epoch 8, then rises while training loss keeps falling.
+\item Used: L2 weight decay and early stopping.
+\item Could also try: data augmentation, dropout, more data, or a CNN.
+\end{itemize}
+
+\textbf{Impact of tuning:} untuned MLP 1.2\%, tuned MLP 49.4\%. During the search, validation accuracy went from
+44.0\% to 53.6\%. The final model scores 56.0\% on validation but 49.4\% on test, because the settings were
+picked on the validation set. The test number is the honest one.
+
+\section{Conclusion}
+\begin{itemize}
+\item The PLA reaches 23.0\%. The tuned MLP reaches 49.4\% (macro F1 48.8\%).
+\item Learning rate was the most important hyperparameter. Deeper was not clearly better.
+\item Overfitting is the main problem left, because there are only about 38 training images per class.
+\end{itemize}
+
+\section{Learning Outcomes}
+\begin{itemize}
+\item Implemented the PLA and an MLP with backpropagation from scratch.
+\item Learned to tune hyperparameters on a separate validation set.
+\item Saw how learning rate, batch size and depth affect each other.
+\item Learned to read confusion matrices, ROC curves and convergence curves.
+\end{itemize}
+
+\section{References}
+\begin{enumerate}
+\item Stephen Marsland, ``Machine Learning - An Algorithmic Perspective'', 2nd Edition, Chapman and
+Hall/CRC Machine Learning and Pattern Recognition Series, 2015.
+\item Ethem Alpaydin, ``Introduction to Machine Learning'', 3rd Edition, The MIT Press, 2014.
+\item F. Rosenblatt, ``The perceptron: a probabilistic model for information storage and organization in the brain'',
+Psychological Review, 65(6), 1958.
+\item D. P. Kingma and J. Ba, ``Adam: a method for stochastic optimization'', ICLR 2015.
+\end{enumerate}
+
+\end{document}
