@@ -1,0 +1,324 @@
+
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{longtable}
+
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{ICS1512}
+\rhead{Machine Learning Algorithms Laboratory}
+\cfoot{\thepage}
+
+\lstset{
+language=Python,
+basicstyle=\ttfamily\small,
+numbers=left,
+frame=single,
+breaklines=true,
+showstringspaces=false
+}
+
+\begin{document}
+
+\begin{tabular}{|p{4cm}|p{11cm}|}
+\hline
+Experiment No. & 8 \\ \hline
+Experiment Title & Clustering Human Activity Recognition Data using K-Means, DBSCAN, and Hierarchical
+Clustering\footnotemark \\ \hline
+Student Name & Sanjay S \\ \hline
+Register Number & 3122247001056 \\ \hline
+Faculty & Dr. Poreddy Ajay Kumar Reddy \\ \hline
+Submission Date & 21/09/2026 \\ \hline
+\end{tabular}
+\footnotetext{\textbf{GitHub Repository: }\url{https://github.com/sanjay-6727/Introdution-to-Machine-Learning-}}
+
+\section{Objective}
+Try clustering on the Human Activity Recognition dataset three different ways -- K-Means, DBSCAN and
+Hierarchical Agglomerative Clustering -- and actually see how each one carves up the data compared to
+the six real activity labels, instead of just assuming clustering will neatly rediscover the activities
+on its own.
+
+\section{Problem Statement}
+Given the UCI HAR smartphone sensor dataset, preprocess and standardize it, reduce it for
+visualization, then run K-Means (choosing $k$ with the elbow method), DBSCAN (tuning $\epsilon$ and
+minPts), and Agglomerative Clustering (comparing linkage methods) on it. Compare the three using
+internal metrics (silhouette, Davies-Bouldin, Calinski-Harabasz) and external metrics against the true
+activity labels (ARI, NMI), and figure out which algorithm actually produces the most meaningful
+clusters here.
+
+\section{Dataset Description}
+\begin{longtable}{|p{3.5cm}|p{4cm}|p{1.6cm}|p{1.8cm}|p{2cm}|p{2.2cm}|}
+\hline
+\textbf{Dataset} & \textbf{Source} & \textbf{Samples} & \textbf{Features} & \textbf{Activities} & \textbf{Subjects} \\ \hline
+Human Activity Recognition Using Smartphones & UCI Machine Learning Repository & 10299 (7352 train +
+2947 test) & 561 & 6 & 30 \\ \hline
+\end{longtable}
+
+\textbf{Activity distribution:} LAYING = 1944, STANDING = 1906, SITTING = 1777, WALKING = 1722,
+WALKING\_UPSTAIRS = 1544, WALKING\_DOWNSTAIRS = 1406. Reasonably balanced across the six classes, with
+LAYING slightly over-represented and WALKING\_DOWNSTAIRS slightly under.
+
+\textbf{Preprocessing steps:}
+\begin{itemize}
+\item Merged the official train and test splits back into one 10299-row dataset, since clustering is
+unsupervised and doesn't need the original train/test split, and combining the two just gives a fuller
+picture of the activity space.
+\item No missing values anywhere in the 561 features, so no imputation was needed.
+\item Activity codes (1--6) mapped to their proper names using \texttt{activity\_labels.txt}, kept
+around purely as ground truth for the external evaluation metrics, never fed to the clustering
+algorithms themselves.
+\item All 561 features standardized with \texttt{StandardScaler}, since clustering algorithms are
+distance-based and the raw features already sit in roughly $[-1, 1]$ but on slightly different scales.
+\item Since 10299 points is a lot to run DBSCAN, Agglomerative clustering and t-SNE on comfortably, I
+took a stratified 2000-point subsample (proportional per activity) for the actual clustering and
+visualization, so every algorithm sees the same data and the comparison stays fair.
+\item PCA down to 30 components was used as the working feature space for all three clustering
+algorithms (about 82\% of the variance retained), mainly to keep distances meaningful and DBSCAN/HAC
+tractable; a separate 2-component PCA and a 2D t-SNE embedding were computed purely for plotting.
+\end{itemize}
+
+\section{Model A: K-Means Clustering and the Elbow Method}
+
+\begin{table}[H]
+\centering
+\caption{K-Means Elbow Method Results}
+\begin{tabular}{ccc}
+\toprule
+Number of Clusters (k) & WCSS (Inertia) & Silhouette Score \\
+\midrule
+2 & 433577.6 & 0.4775 \\
+3 & 359760.2 & 0.4070 \\
+4 & 332567.7 & 0.2174 \\
+5 & 305593.0 & 0.1940 \\
+6 & 291478.2 & 0.1835 \\
+7 & 280425.3 & 0.1602 \\
+8 & 270008.5 & 0.1573 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{outputs/elbow_silhouette.png}
+\caption{Elbow curve (WCSS vs k) and silhouette score vs k for K-Means.}
+\end{figure}
+
+Purely on silhouette score, $k=2$ wins by a wide margin, and the elbow curve also bends hardest around
+$k=2$ to $k=3$. That's not surprising -- at the coarsest level, HAR activities split into two very
+distinct physical states, moving (the three walking types) and stationary (sitting, standing, laying),
+and geometrically those two blobs are far apart while the finer distinctions inside each blob are much
+subtler. Since the assignment goal is to compare clustering against the six known activities, though,
+I used \textbf{k=6} for the main analysis and all cross-algorithm comparisons, so K-Means, DBSCAN and
+Hierarchical Clustering are all being judged on the same basis.
+
+\section{Model B: DBSCAN}
+
+minPts was fixed at 60 (twice the 30-dimensional PCA space, a common rule of thumb), and $\epsilon$ was
+swept using a k-distance plot plus a direct search over several candidate values.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.65\linewidth]{outputs/dbscan_kdistance.png}
+\caption{60-NN distance plot used to guide the choice of $\epsilon$ for DBSCAN.}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{DBSCAN -- eps Tuning}
+\begin{tabular}{cccc}
+\toprule
+eps & Clusters Found & Noise Points & Silhouette (non-noise) \\
+\midrule
+8 & 1 & 1220 (61.0\%) & -- \\
+10 & 1 & 996 (49.8\%) & -- \\
+12 & 2 & 483 (24.1\%) & 0.5011 \\
+14 & 1 & 219 (11.0\%) & -- \\
+16 & 1 & 108 (5.4\%) & -- \\
+18 & 1 & 70 (3.5\%) & -- \\
+20 & 1 & 37 (1.9\%) & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+$\epsilon = 12$ was the only setting in the sweep that actually produced more than one cluster; every
+other value either merged everything into one blob (too permissive) or scattered most points as noise
+(too strict). The final DBSCAN run at $\epsilon = 12$, minPts $=60$ gives \textbf{2 clusters} and 483
+noise points (24.1\% of the data).
+
+\section{Model C: Hierarchical Agglomerative Clustering}
+
+\begin{table}[H]
+\centering
+\caption{Hierarchical Clustering -- Linkage Comparison (k=6)}
+\begin{tabular}{ccc}
+\toprule
+Linkage & Silhouette Score & Davies-Bouldin Index \\
+\midrule
+Single & 0.5590 & 0.4092 \\
+Complete & 0.4458 & 1.0389 \\
+Average & 0.4625 & 0.9031 \\
+Ward & 0.1663 & 1.8512 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{outputs/dendrogram_ward.png}
+\caption{Dendrogram using Ward's linkage on a 200-point subsample.}
+\end{figure}
+
+Single linkage posts the best silhouette score here, but that's a classic chaining artifact -- it
+tends to swallow almost everything into one giant cluster and peel off a handful of outliers as tiny
+separate clusters, which looks great by silhouette but doesn't map onto anything meaningful. Ward's
+linkage, which the experiment specifically asks for, gives a much lower silhouette (0.1663) but that's
+because it's actually trying to build six balanced, compact clusters instead of one big blob plus
+scraps, so it's the more honest and more useful result even though the raw silhouette number looks
+worse on paper. Ward's linkage is what's used for the rest of the comparison below.
+
+\section{Evaluation Metrics and Results}
+
+\begin{table}[H]
+\centering
+\caption{Clustering Evaluation Metrics Comparison}
+\begin{tabular}{lccccc}
+\toprule
+Model & Silhouette & Davies-Bouldin & Calinski-Harabasz & ARI & NMI \\
+\midrule
+K-Means (k=6) & 0.1835 & 1.7524 & 858.3 & 0.4178 & 0.5629 \\
+DBSCAN (eps=12) & 0.5011 & 0.8295 & 1810.5 & 0.3022 & 0.5321 \\
+Hierarchical (Ward) & 0.1663 & 1.8512 & 794.6 & 0.3541 & 0.5345 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\linewidth]{outputs/metrics_barplot.png}
+\caption{Silhouette, ARI and NMI compared across the three clustering algorithms.}
+\end{figure}
+
+K-Means comes out ahead on the metrics that actually compare against the true activity labels (ARI
+0.4178, NMI 0.5629), even though DBSCAN wins on the purely internal silhouette and Davies-Bouldin
+scores. That's the DBSCAN result being a bit of a mirage: it only found 2 clusters (moving vs
+stationary), and it's easy to get a great internal separation score with just 2 well-separated blobs
+while completely missing the finer 6-way structure the experiment actually cares about.
+
+\section{Graphs and Visualization}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{outputs/ground_truth_scatter.png}
+\caption{PCA (left) and t-SNE (right) 2D projections colored by the true activity label, for
+reference.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{outputs/cluster_scatter_pca_tsne.png}
+\caption{PCA (top row) and t-SNE (bottom row) projections colored by cluster assignment for K-Means,
+DBSCAN and Hierarchical (Ward) respectively.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\linewidth]{outputs/kmeans_vs_truth_confusion.png}
+\caption{K-Means clusters (k=6) cross-tabulated against the true activity labels.}
+\end{figure}
+
+\textbf{Inference:} The ground-truth t-SNE plot shows a very clean, tight LAYING blob sitting far from
+everything else, a fairly clean WALKING/WALKING\_UPSTAIRS/WALKING\_DOWNSTAIRS region, and SITTING and
+STANDING overlapping quite a bit with each other. That overlap between SITTING and STANDING is exactly
+where all three clustering algorithms struggle: in the K-Means cross-tab, cluster 2 mixes 244 SITTING
+with 249 STANDING points almost 50/50, and cluster 5 mixes 88 SITTING, 121 STANDING and 56 LAYING
+together. LAYING, by contrast, gets almost cleanly isolated into cluster 0 (305 of 378 LAYING points),
+and the three walking activities mostly separate out into clusters 1, 3 and 4, though
+WALKING\_UPSTAIRS and WALKING\_DOWNSTAIRS bleed into each other somewhat too.
+
+\section{Observations}
+\begin{itemize}
+\item \textbf{Which algorithm produced the most meaningful clusters:} K-Means, on balance. It's the
+only one of the three that actually attempts and roughly recovers something close to the real 6-way
+activity structure (ARI 0.418, NMI 0.563), even if it's far from perfect. DBSCAN's headline internal
+scores are misleading once you check them against ARI/NMI -- it settled for a coarse 2-cluster
+solution that trades away the fine-grained structure entirely.
+\item \textbf{How sensitive was K-Means to the choice of k:} Very. The silhouette score drops sharply
+from 0.4775 at k=2 to 0.1835 at k=6, meaning the natural, cleanly-separated structure in this data is
+really just 2 clusters (moving vs stationary); forcing k=6 finds real sub-structure but at a real cost
+to how cleanly separated the individual clusters are.
+\item \textbf{Did DBSCAN detect noise or small clusters effectively:} It found noise, plenty of it,
+but not small clusters -- every $\epsilon$ that avoided lumping everything into one cluster still only
+produced 2 clusters, never anything close to 6. It's better described here as a noise/outlier
+detector than as a way to recover the six activities.
+\item \textbf{How does linkage choice affect Hierarchical Clustering:} Hugely. Single linkage chains
+points together and basically produces one dominant cluster plus a scattering of near-singleton
+outlier clusters, which inflates the silhouette score without meaning much. Complete and average
+linkage sit in between. Ward's linkage is the only one that produces genuinely balanced, compact
+clusters at k=6, which is presumably why the experiment specifically calls for it, even though its raw
+silhouette number is the lowest of the four.
+\item \textbf{Which internal metric best matched visual intuition:} Calinski-Harabasz tracked the
+t-SNE/PCA plots better than silhouette did in this case -- K-Means' relatively high CH score (858.3)
+lines up with clusters that look reasonably compact and separated in the scatter plots, whereas
+silhouette got fooled by DBSCAN's 2-cluster solution looking artificially clean.
+\end{itemize}
+
+\section{Discussion}
+The big theme here is that "looks good by an internal metric" and "actually recovers the known
+structure" are not the same thing, and DBSCAN is the clearest example: best silhouette and
+Davies-Bouldin scores of the three, but worst ARI, because it quietly gave up on separating six
+activities and settled for two. K-Means, despite having the worst silhouette score of the three at
+k=6, is the one that comes closest to matching the ground truth, simply because it was forced to
+actually produce six clusters rather than finding an easy two-way split. The SITTING/STANDING overlap
+that trips up every algorithm here isn't really a clustering failure so much as a property of the data
+itself -- those two activities produce genuinely similar sensor signatures when a phone is worn at the
+waist, so no amount of retuning $\epsilon$ or trying a different linkage is likely to fully separate
+them without extra features or a different sensor placement.
+
+\section{Conclusion}
+Across K-Means, DBSCAN and Hierarchical (Ward) clustering on the HAR dataset, K-Means at $k=6$ gave the
+most useful match to the real six activities (ARI 0.418, NMI 0.563), mainly by being willing to accept
+a lower silhouette score in exchange for actually splitting the data six ways. DBSCAN is genuinely good
+at finding the coarsest possible structure (moving vs. stationary) and flagging outliers, but it isn't
+well suited to recovering finer-grained classes on this dataset. Ward's linkage HAC lands in between
+the two, doing reasonably on external metrics without either of K-Means' flexibility or DBSCAN's noise
+handling. If the actual goal is to recover activity-level clusters, K-Means with a task-informed choice
+of $k$ (rather than the value silhouette alone would suggest) is the more practical choice here.
+
+\section{Learning Outcomes}
+\begin{itemize}
+\item Learned to read an elbow curve and a silhouette-vs-k plot together, and to recognize when they
+disagree with what the actual task needs (silhouette wanted $k=2$, the task wanted $k=6$).
+\item Got hands-on practice tuning DBSCAN's $\epsilon$ using a k-distance plot, and saw first-hand how
+narrow the useful range of $\epsilon$ can be on high-dimensional, PCA-reduced sensor data.
+\item Directly observed the single-linkage chaining problem in hierarchical clustering, and understood
+why Ward's linkage is usually preferred for producing balanced clusters even when its raw silhouette
+looks worse.
+\item Practiced distinguishing internal clustering metrics (silhouette, Davies-Bouldin,
+Calinski-Harabasz) from external ones (ARI, NMI), and saw a concrete case where they disagreed.
+\item Used PCA and t-SNE together for visualization, and noticed how t-SNE separates the
+SITTING/STANDING overlap a little better than a straight 2D PCA projection does.
+\end{itemize}
+
+\section{References}
+\begin{enumerate}
+\item Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz, ``Human
+Activity Recognition on Smartphones using a Multiclass Hardware-Friendly Support Vector Machine'',
+IWAAL 2012.
+\item UCI Machine Learning Repository, Human Activity Recognition Using Smartphones Data Set:
+\url{https://archive.ics.uci.edu/dataset/240/human+activity+recognition+using+smartphones}
+\item Scikit-learn documentation: \url{https://scikit-learn.org/stable/modules/clustering.html}
+\end{enumerate}
+
+\end{document}
